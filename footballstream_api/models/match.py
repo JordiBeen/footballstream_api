@@ -54,6 +54,8 @@ class Match(Base):
         if self.localteam and self.visitorteam:
             retval['matchup'] = "{} - {}".format(self.localteam.name,
                                                  self.visitorteam.name)
+        retval['competition'] = "{} - {}".format(self.competition.region,
+                                                 self.competition.name)
         retval['date_start'] = datetime.datetime.strftime(self.date_start,
                                                           "%d-%m-%Y %H:%M")
         return retval
