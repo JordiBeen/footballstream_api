@@ -62,3 +62,11 @@ def setup_routes(config):
     config.add_route('players.list', '/api/v1/players')
     # GET
     config.add_route('players.get', '/api/v1/players/{player_id}')
+
+    ###
+    # EVENTS
+    ###
+    # LIST
+    config.add_route('events.list', '/api/v1/events')
+    # GET
+    config.add_route('events.get', '/api/v1/events/{event_id}')

@@ -44,16 +44,7 @@ class Team(Base):
                   "external_id",
                   "is_national",
                   "name",
-                  "country",
-                  "founded",
-                  "venue_name",
-                  "venue_id",
-                  "venue_surface",
-                  "venue_address",
-                  "venue_city",
-                  "venue_capacity",
-                  "coach_name",
-                  "coach_id"
+                  "country"
                   )
 
         retval = dict((k, getattr(self, k, None)) for k in fields)
@@ -84,7 +75,8 @@ class Team(Base):
 
         retval = dict((k, getattr(self, k, None)) for k in fields)
         # extra fields below
-        retval['competitions'] = [competition.to_json() for competition in self.competitions]
+        retval['competitions'] = [competition.to_json() for competition in
+                                  self.competitions]
         return retval
 
     def to_json_detail(self):

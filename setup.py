@@ -64,5 +64,6 @@ setup(name='footballstream_api',
       updatecommentaries = footballstream_api.scripts.updatecommentaries:main
       updateteams = footballstream_api.scripts.updateteams:main
       updateplayers = footballstream_api.scripts.updateplayers:main
+      updateevents = footballstream_api.scripts.updateevents:main
       """,
       )

@@ -14,7 +14,7 @@ def matches_get(request):
     match = get_match(id_=match_id)
 
     return {
-        'match': match.to_json()
+        'match': match.to_json_detail()
     }
 
 

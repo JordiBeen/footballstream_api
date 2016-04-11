@@ -37,6 +37,10 @@ def general_entry_points(request):
             'players': {
                 'list': '/api/v1/players',
                 'get': '/api/v1/players/{player_id}'
+            },
+            'events': {
+                'list': '/api/v1/events',
+                'get': '/api/v1/events/{event_id}'
             }
         }
     }

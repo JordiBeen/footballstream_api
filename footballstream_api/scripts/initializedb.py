@@ -13,6 +13,7 @@ from ..models import persist
 from ..models.meta import Base, DBSession
 from ..models.user import User, get_user  # noqa
 from ..models.competition import Competition  # noqa
+from ..models.event import Event  # noqa
 from ..models.standing import Standing  # noqa
 from ..models.match import Match  # noqa
 from ..models.commentary import Commentary  # noqa
