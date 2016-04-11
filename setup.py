@@ -1,6 +1,6 @@
 import os
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, 'README.md')) as f:
@@ -26,7 +26,8 @@ requires = [
     'GeoAlchemy2',
     'bcrypt',
     'pycrypto',
-    'waitress'
+    'waitress',
+    'requests'
 ]
 
 setup(name='footballstream_api',
@@ -53,7 +54,13 @@ setup(name='footballstream_api',
       [paste.app_factory]
       main = footballstream_api:main
       [console_scripts]
-      initialize_footballstream_api_db = footballstream_api.scripts.initializedb:main
-      drop_footballstream_api_db = footballstream_api.scripts.dropdb:main
+      initialize_footballstream_api_db = \
+        footballstream_api.scripts.initializedb:main
+      updatecompetitions = footballstream_api.scripts.updatecompetitions:main
+      updatestandings = footballstream_api.scripts.updatestandings:main
+      updatematches = footballstream_api.scripts.updatematches:main
+      updatecommentaries = footballstream_api.scripts.updatecommentaries:main
+      updateteams = footballstream_api.scripts.updateteams:main
+      updateplayers = footballstream_api.scripts.updateplayers:main
       """,
       )
