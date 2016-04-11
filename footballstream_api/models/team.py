@@ -41,7 +41,19 @@ class Team(Base):
     def __json__(self):
         # set fields here
         fields = ("id",
-                  "name"
+                  "external_id",
+                  "is_national",
+                  "name",
+                  "country",
+                  "founded",
+                  "venue_name",
+                  "venue_id",
+                  "venue_surface",
+                  "venue_address",
+                  "venue_city",
+                  "venue_capacity",
+                  "coach_name",
+                  "coach_id"
                   )
 
         retval = dict((k, getattr(self, k, None)) for k in fields)
@@ -51,6 +63,32 @@ class Team(Base):
 
     def to_json(self):
         return self.__json__()
+
+    def __json_detail__(self):
+        # set fields here
+        fields = ("id",
+                  "external_id",
+                  "is_national",
+                  "name",
+                  "country",
+                  "founded",
+                  "venue_name",
+                  "venue_id",
+                  "venue_surface",
+                  "venue_address",
+                  "venue_city",
+                  "venue_capacity",
+                  "coach_name",
+                  "coach_id"
+                  )
+
+        retval = dict((k, getattr(self, k, None)) for k in fields)
+        # extra fields below
+        retval['competitions'] = [competition.to_json() for competition in self.competitions]
+        return retval
+
+    def to_json_detail(self):
+        return self.__json_detail__()
 
 
 def get_team(id_=None, external_id=None):

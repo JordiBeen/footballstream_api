@@ -14,7 +14,7 @@ def teams_get(request):
     team = get_team(id_=team_id)
 
     return {
-        'team': team.to_json()
+        'team': team.to_json_detail()
     }
 
 
