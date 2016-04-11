@@ -36,6 +36,7 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     update_competitions(settings)
+    print('Competitions successfully updated')
 
 
 def update_competitions(settings):
@@ -44,16 +45,16 @@ def update_competitions(settings):
     api_endpoint = "/competitions"
 
     payload = {'Authorization': api_key}
-    r = requests.get(api_url + api_endpoint, params=payload)
+    request = requests.get(api_url + api_endpoint, params=payload)
+    response = request.json()
 
-    log.info("{} Start of log: '{}' {}".format("-" * 40, "r", "-" * 40))
-    log.info(r)
-    log.info("{} End of log: '{}' {}".format("-" * 40, "r", "-" * 40))
-    # with transaction.manager:
-    #     u = get_user(id_=1)
-    #     if not u:
-    #         u = User()
-    #         u.firstname = "Jordi"
-    #         u.lastname = "Been"
-    #         u.email = "hello@jordibeen.nl"
-    #         persist(u)
+    with transaction.manager:
+        for obj in response:
+            competition = get_competition(external_id=obj['id'])
+            if not competition:
+                competition = Competition()
+                competition.external_id = obj['id']
+                competition.name = obj['name']
+                competition.region = obj['region']
+                competition.logo = obj['region']
+                persist(competition)

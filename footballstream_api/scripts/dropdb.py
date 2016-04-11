@@ -1,11 +1,18 @@
 import os
 import sys
 
-from sqlalchemy import engine_from_config
-
 from pyramid.paster import get_appsettings, setup_logging
 
+from sqlalchemy import engine_from_config
+
 from ..models.meta import Base, DBSession
+from ..models.user import User, get_user  # noqa
+from ..models.competition import Competition  # noqa
+from ..models.standing import Standing  # noqa
+from ..models.match import Match  # noqa
+from ..models.commentary import Commentary  # noqa
+from ..models.team import Team  # noqa
+from ..models.player import Player  # noqa
 
 
 def usage(argv):

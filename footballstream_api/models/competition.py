@@ -12,12 +12,16 @@ class Competition(Base):
     __tablename__ = "competition"
 
     id = Column(Integer, primary_key=True)
+    external_id = Column(Integer)
     name = Column(String)
+    region = Column(String)
 
     def __json__(self):
         # set fields here
         fields = ("id",
-                  "name"
+                  "external_id",
+                  "name",
+                  "region"
                   )
 
         retval = dict((k, getattr(self, k, None)) for k in fields)
@@ -29,10 +33,12 @@ class Competition(Base):
         return self.__json__()
 
 
-def get_competition(id_=None):
+def get_competition(id_=None, external_id=None):
     q = DBSession.query(Competition)
     if id_:
         q = q.filter(Competition.id == id_)
+    if external_id:
+        q = q.filter(Competition.external_id == external_id)
     return q.first()
 
 

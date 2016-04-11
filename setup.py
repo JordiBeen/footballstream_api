@@ -54,6 +54,8 @@ setup(name='footballstream_api',
       [paste.app_factory]
       main = footballstream_api:main
       [console_scripts]
+      drop_footballstream_api_db = \
+        footballstream_api.scripts.dropdb:main
       initialize_footballstream_api_db = \
         footballstream_api.scripts.initializedb:main
       updatecompetitions = footballstream_api.scripts.updatecompetitions:main
