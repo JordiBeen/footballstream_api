@@ -1,0 +1,18 @@
+# AppleDouble Files
+*.AppleDouble
+
+# DS Store file
+.DS_Store
+
+# All .ini files except template.ini
+*.ini
+!template.ini
+
+# pycache folders
+__pycache__/
+*.pyc
+
+SOURCES.txt
+
+.idea/
+*.egg-info/
