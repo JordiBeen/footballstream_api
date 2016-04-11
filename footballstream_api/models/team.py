@@ -1,18 +1,42 @@
 # encoding: utf-8
 import logging
 
-from sqlalchemy import (Column, Integer, String)
+from sqlalchemy import (Column, ForeignKey, Integer, String, Table)
+from sqlalchemy.orm import relationship
 
 from .meta import Base, DBSession
 
 log = logging.getLogger(__name__)
 
 
+team_competition = Table(
+    'team_competition',
+    Base.metadata,
+    Column('team_external_id', Integer, ForeignKey('team.external_id')),
+    Column('competition_external_id', Integer, ForeignKey('competition.'
+                                                          'external_id'))
+)
+
+
 class Team(Base):
     __tablename__ = "team"
 
     id = Column(Integer, primary_key=True)
+    external_id = Column(Integer, unique=True)
+    competitions = relationship('Competition', secondary=team_competition,
+                                backref='teams')
+    is_national = Column(String)
     name = Column(String)
+    country = Column(String)
+    founded = Column(String)
+    venue_name = Column(String)
+    venue_id = Column(Integer)
+    venue_surface = Column(String)
+    venue_address = Column(String)
+    venue_city = Column(String)
+    venue_capacity = Column(Integer)
+    coach_name = Column(String)
+    coach_id = Column(String)
 
     def __json__(self):
         # set fields here
@@ -29,10 +53,12 @@ class Team(Base):
         return self.__json__()
 
 
-def get_team(id_=None):
+def get_team(id_=None, external_id=None):
     q = DBSession.query(Team)
     if id_:
         q = q.filter(Team.id == id_)
+    if external_id:
+        q = q.filter(Team.external_id == external_id)
     return q.first()
 
 

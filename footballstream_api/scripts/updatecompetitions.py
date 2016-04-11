@@ -52,6 +52,7 @@ def update_competitions(settings):
         for obj in response:
             competition = get_competition(external_id=obj['id'])
             if not competition:
+                log.info("Found new competition with id: {}".format(obj['id']))
                 competition = Competition()
                 competition.external_id = obj['id']
                 competition.name = obj['name']

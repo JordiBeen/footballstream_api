@@ -12,7 +12,7 @@ class Competition(Base):
     __tablename__ = "competition"
 
     id = Column(Integer, primary_key=True)
-    external_id = Column(Integer)
+    external_id = Column(Integer, unique=True)
     name = Column(String)
     region = Column(String)
 
