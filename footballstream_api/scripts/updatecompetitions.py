@@ -14,7 +14,7 @@ import transaction
 
 from ..models import persist
 from ..models.meta import Base, DBSession
-from ..models.user import User, get_user  # noqa
+from ..models.competition import Competition, get_competition  # noqa
 
 log = logging.getLogger(__name__)
 
@@ -41,14 +41,14 @@ def main(argv=sys.argv):
 def update_competitions(settings):
     api_key = settings['football-api.key']
     api_url = settings['football-api.url']
-    api_entrypoint = "/competitions"
+    api_endpoint = "/competitions"
 
     payload = {'Authorization': api_key}
-    r = requests.get(api_url + api_entrypoint, params=payload)
-    
-    log.info("{} Start of log: '{}' {}".format("-" * 40, "r.json()", "-" * 40))
-    log.info(r.json())
-    log.info("{} End of log: '{}' {}".format("-" * 40, "r.json()", "-" * 40))
+    r = requests.get(api_url + api_endpoint, params=payload)
+
+    log.info("{} Start of log: '{}' {}".format("-" * 40, "r", "-" * 40))
+    log.info(r)
+    log.info("{} End of log: '{}' {}".format("-" * 40, "r", "-" * 40))
     # with transaction.manager:
     #     u = get_user(id_=1)
     #     if not u:

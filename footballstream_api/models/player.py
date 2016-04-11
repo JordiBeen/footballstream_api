@@ -8,20 +8,16 @@ from .meta import Base, DBSession
 log = logging.getLogger(__name__)
 
 
-class User(Base):
-    __tablename__ = "user"
+class Player(Base):
+    __tablename__ = "player"
 
     id = Column(Integer, primary_key=True)
-    firstname = Column(String)
-    lastname = Column(String)
-    email = Column(String)
+    name = Column(String)
 
     def __json__(self):
         # set fields here
         fields = ("id",
-                  "firstname",
-                  "lastname",
-                  "email"
+                  "name"
                   )
 
         retval = dict((k, getattr(self, k, None)) for k in fields)
@@ -33,13 +29,13 @@ class User(Base):
         return self.__json__()
 
 
-def get_user(id_=None):
-    q = DBSession.query(User)
+def get_player(id_=None):
+    q = DBSession.query(Player)
     if id_:
-        q = q.filter(User.id == id_)
+        q = q.filter(Player.id == id_)
     return q.first()
 
 
-def list_users():
-    q = DBSession.query(User)
+def list_players():
+    q = DBSession.query(Player)
     return q.all()
