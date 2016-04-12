@@ -66,9 +66,9 @@ def update_teams(settings):
             if not team:
                 log.info("Team does not yet exist, creating team")
                 team = Team()
+                team.external_id = response['team_id']
 
             # Else we just overwrite the team
-            team.external_id = response['team_id']
             team.is_national = response['is_national']
             team.name = response['name']
             team.country = response['country']

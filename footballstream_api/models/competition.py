@@ -26,7 +26,8 @@ class Competition(Base):
 
         retval = dict((k, getattr(self, k, None)) for k in fields)
         # extra fields below
-        # retval['extra_field'] = "something extra"
+        if self.teams:
+            retval['teams'] = [team.to_json_minor() for team in self.teams]
         return retval
 
     def to_json(self):

@@ -84,7 +84,6 @@ def update_standings(settings):
                     standing = Standing()
 
                 # Else we just overwrite the standing
-                standing.competition = competition
                 standing.team = team
                 standing.season = obj['season']
                 standing.round = obj['round']
@@ -116,5 +115,8 @@ def update_standings(settings):
                 standing.gd = obj['gd']
                 standing.points = obj['points']
                 standing.description = obj['description']
+
+                standing.competition = competition
+
                 merge(standing)
                 persist(standing)

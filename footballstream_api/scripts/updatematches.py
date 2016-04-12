@@ -51,12 +51,14 @@ def update_matches(settings):
 
     # Get date of 7 days from now
     d = datetime.datetime.now()
-    today = d.strftime("%d.%m.%Y")
     d += datetime.timedelta(14)
     next_week = d.strftime("%d.%m.%Y")
+    d = datetime.datetime.now()
+    d += datetime.timedelta(-14)
+    last_week = d.strftime("%d.%m.%Y")
 
     # Get matches from today to next week days from now
-    payload = {'from_date': today,
+    payload = {'from_date': last_week,
                'to_date': next_week,
                'Authorization': api_key}
     request = requests.get(api_url + api_endpoint, params=payload)
@@ -76,9 +78,9 @@ def update_matches(settings):
             if not match:
                 log.info("Match does not yet exist, creating match")
                 match = Match()
+                match.external_id = obj['id']
 
             # Else we just overwrite the match
-            match.external_id = obj['id']
             match.season = obj['season']
             match.week = obj['week'] if obj['week'] else None
             match.venue = obj['venue']
@@ -117,4 +119,4 @@ def update_matches(settings):
             match.visitorteam = visitorteam
 
             merge(match)
-            persist(match)
+            # persist(match)

@@ -1,10 +1,11 @@
 # encoding: utf-8
 import datetime
+import json
 import logging
 import time
 
-from sqlalchemy import (Column, DateTime, ForeignKey, Integer, String, asc,
-                        desc)
+from sqlalchemy import (Column, DateTime, ForeignKey, Integer, String,
+                        Text, asc, desc)
 from sqlalchemy.orm import relationship
 
 from .meta import Base, DBSession
@@ -42,6 +43,11 @@ class Match(Base):
     et_score = Column(String)
     penalty_local = Column(String)
     penalty_visitor = Column(String)
+    lineup = Column(Text)
+    playerstats = Column(Text)
+    subs = Column(Text)
+    match_stats = Column(Text)
+    match_info = Column(Text)
     date_created = Column(DateTime, default=time.ctime())
 
     def __json__(self):
@@ -94,6 +100,14 @@ class Match(Base):
         retval['competition'] = self.competition.to_json()
         retval['date_start'] = datetime.datetime.strftime(self.date_start,
                                                           "%d-%m-%Y %H:%M")
+        retval["lineup"] = json.loads(self.lineup)
+        retval["playerstats"] = json.loads(self.playerstats)
+        retval["subs"] = json.loads(self.subs)
+        retval["match_stats"] = json.loads(self.match_stats)
+        retval["match_info"] = json.loads(self.match_info)
+        retval["commentaries"] = [commentary.to_json() for commentary
+                                  in self.commentaries]
+        retval["events"] = [event.to_json() for event in self.events]
         return retval
 
     def to_json_detail(self):

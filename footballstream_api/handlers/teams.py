@@ -32,7 +32,7 @@ def teams_list(request):
             if competition in team.competitions:
                 competition_teams.append(team)
 
-    teams = competition_teams
+        teams = competition_teams
 
     return {
         'teams': [team.to_json() for team in teams]

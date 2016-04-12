@@ -49,7 +49,6 @@ class Team(Base):
 
         retval = dict((k, getattr(self, k, None)) for k in fields)
         # extra fields below
-        # retval['extra_field'] = "something extra"
         return retval
 
     def to_json(self):
@@ -81,6 +80,19 @@ class Team(Base):
 
     def to_json_detail(self):
         return self.__json_detail__()
+
+    def __json_minor__(self):
+        # set fields here
+        fields = ("id",
+                  "name"
+                  )
+
+        retval = dict((k, getattr(self, k, None)) for k in fields)
+        # extra fields below
+        return retval
+
+    def to_json_minor(self):
+        return self.__json_minor__()
 
 
 def get_team(id_=None, external_id=None):

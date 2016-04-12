@@ -16,10 +16,11 @@ class Event(Base):
     external_id = Column(Integer, unique=True)
     match_id = Column(Integer, ForeignKey('match.external_id'))
     match = relationship('Match', backref='events')
+    team_id = Column(Integer, ForeignKey('team.id'))
+    team = relationship('Team', backref='events')
     type = Column(String)
     minute = Column(Integer)
     extra_min = Column(Integer)
-    team = Column(String)
     player = Column(String)
     assist = Column(String)
     result = Column(String)
@@ -28,21 +29,29 @@ class Event(Base):
         # set fields here
         fields = ("id",
                   "type"
+                  "type",
+                  "minute",
+                  "extra_min",
+                  "player",
+                  "assist",
+                  "result"
                   )
 
         retval = dict((k, getattr(self, k, None)) for k in fields)
         # extra fields below
-        # retval['extra_field'] = "something extra"
+        retval['team'] = self.team.to_json_minor()
         return retval
 
     def to_json(self):
         return self.__json__()
 
 
-def get_event(id_=None):
+def get_event(id_=None, external_id=None):
     q = DBSession.query(Event)
     if id_:
         q = q.filter(Event.id == id_)
+    if external_id:
+        q = q.filter(Event.external_id == external_id)
     return q.first()
 
 

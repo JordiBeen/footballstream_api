@@ -49,9 +49,11 @@ def update_competitions(settings):
     response = request.json()
 
     with transaction.manager:
+        allowed_ids = ["1005", "1007", "1198", "1204", "1221", "1229", "1269", "1322", "1352",
+                       "1399"]
         for obj in response:
             competition = get_competition(external_id=obj['id'])
-            if not competition:
+            if not competition and obj['id'] in allowed_ids:
                 log.info("Found new competition with id: {}".format(obj['id']))
                 competition = Competition()
                 competition.external_id = obj['id']
