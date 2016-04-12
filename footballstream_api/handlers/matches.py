@@ -19,6 +19,26 @@ def matches_get(request):
     }
 
 
+@view_config(route_name='matches.current', permission='public',
+             renderer="json")
+def matches_current(request):
+    matches = list_matches(current=True)
+
+    return {
+        'match': [match.to_json_detail() for match in matches]
+    }
+
+
+@view_config(route_name='matches.finished', permission='public',
+             renderer="json")
+def matches_finished(request):
+    matches = list_matches(finished=True)
+
+    return {
+        'match': [match.to_json_finished() for match in matches]
+    }
+
+
 @view_config(route_name='matches.list', permission='public',
              renderer="json")
 def matches_list(request):

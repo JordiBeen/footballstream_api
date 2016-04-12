@@ -35,6 +35,10 @@ def setup_routes(config):
     ###
     # LIST
     config.add_route('matches.list', '/api/v1/matches')
+    # CURRENT
+    config.add_route('matches.current', '/api/v1/matches/current')
+    # FINISHED
+    config.add_route('matches.finished', '/api/v1/matches/finished')
     # GET
     config.add_route('matches.get', '/api/v1/matches/{match_id}')
 

@@ -25,6 +25,8 @@ def general_entry_points(request):
             'matches': {
                 'list': '/matches',
                 'get': '/matches/{match_id}',
+                'list_current': '/matches/current',
+                'list_finished': '/matches/finished',
                 'get_by_team': '/matches?team_id={team_id} '
                                '(List of ids is allowed)'
             },
