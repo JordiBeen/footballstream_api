@@ -54,7 +54,7 @@ def update_commentaries(settings):
     if not current_matches:
         log.info("No current matches at this time")
     for match in current_matches:
-        log.info("{} Start of match update for '{}-{}' {}".format("-" * 40, match.localteam.name, match.visitorteam.name, "-" * 40))
+        log.info("{} Start of match update for '{}' {}".format("-" * 40, match.id, "-" * 40))
         log.info('Getting live commentaries for match with id: {}'
                  .format(match.external_id))
         api_endpoint = "/commentaries/{}".format(match.external_id)
@@ -71,7 +71,9 @@ def update_commentaries(settings):
                 with transaction.manager:
                     for obj in comments:
                             # Does the event exist yet?
-                            commentary = get_commentary(external_id=obj['id'])
+                            commentary = get_commentary(match_id=match.external_id, 
+                                                        comment=obj['comment'])
+
                             # To what match does this event belong?
                             com_match = get_match(id_=match.id)
 

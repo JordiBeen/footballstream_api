@@ -41,12 +41,16 @@ class Commentary(Base):
         return self.__json__()
 
 
-def get_commentary(id_=None, external_id=None):
+def get_commentary(id_=None, external_id=None, match_id=None, comment=None):
     q = DBSession.query(Commentary)
     if id_:
         q = q.filter(Commentary.id == id_)
     if external_id:
         q = q.filter(Commentary.external_id == external_id)
+    if match_id:
+        q = q.filter(Commentary.match_id == match_id)
+    if comment:
+        q = q.filter(Commentary.comment == comment)
     return q.first()
 
 
