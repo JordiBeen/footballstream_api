@@ -51,11 +51,14 @@ def update_matches(settings):
 
     # Get date of 7 days from now
     d = datetime.datetime.now()
-    d += datetime.timedelta(7)
+    today = d.strftime("%d.%m.%Y")
+    d += datetime.timedelta(14)
     next_week = d.strftime("%d.%m.%Y")
 
-    # Get matches of 7 days from now
-    payload = {'match_date': next_week, 'Authorization': api_key}
+    # Get matches from today to next week days from now
+    payload = {'from_date': today,
+               'to_date': next_week,
+               'Authorization': api_key}
     request = requests.get(api_url + api_endpoint, params=payload)
     response = request.json()
 

@@ -11,36 +11,39 @@ def general_entry_points(request):
     return {
         'entry_points': {
             'users': {
-                'list': '/api/v1/users',
-                'get': '/api/v1/users/{user_id}'
+                'list': '/users',
+                'get': '/users/{user_id}'
             },
             'competitions': {
-                'list': '/api/v1/competitions',
-                'get': '/api/v1/competitions/{competition_id}'
+                'list': '/competitions',
+                'get': '/competitions/{competition_id}'
             },
             'standings': {
-                'list': '/api/v1/standings',
-                'get': '/api/v1/standings/{standing_id}'
+                'list': '/standings',
+                'get': '/standings/{standing_id}'
             },
             'matches': {
-                'list': '/api/v1/matches',
-                'get': '/api/v1/matches/{match_id}'
+                'list': '/matches',
+                'get': '/matches/{match_id}',
+                'get_by_team': '/matches?team_id={team_id} '
+                               '(List of ids is allowed)'
             },
             'commentaries': {
-                'list': '/api/v1/commentaries',
-                'get': '/api/v1/commentaries/{commentary_id}'
+                'list': '/commentaries',
+                'get': '/commentaries/{commentary_id}'
             },
             'teams': {
-                'list': '/api/v1/teams',
-                'get': '/api/v1/teams/{team_id}'
+                'list': '/teams',
+                'get': '/teams/{team_id}',
+                'get_by_competition': '/teams?competition_id={competition_id}'
             },
             'players': {
-                'list': '/api/v1/players',
-                'get': '/api/v1/players/{player_id}'
+                'list': '/players',
+                'get': '/players/{player_id}'
             },
             'events': {
-                'list': '/api/v1/events',
-                'get': '/api/v1/events/{event_id}'
+                'list': '/events',
+                'get': '/events/{event_id}'
             }
         }
     }
