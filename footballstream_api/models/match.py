@@ -96,28 +96,28 @@ class Match(Base):
         retval = dict((k, getattr(self, k, None)) for k in fields)
         # extra fields below
         if self.localteam:
-          retval['home_team'] = self.localteam.to_json()
+            retval['home_team'] = self.localteam.to_json()
         if self.visitorteam:
-          retval['away_team'] = self.visitorteam.to_json()
+            retval['away_team'] = self.visitorteam.to_json()
         if self.competition:
-          retval['competition'] = self.competition.to_json()
+            retval['competition'] = self.competition.to_json()
         retval['date_start'] = datetime.datetime.strftime(self.date_start,
                                                           "%d-%m-%Y %H:%M")
         if self.lineup:
-          retval["lineup"] = json.loads(self.lineup)
+            retval["lineup"] = json.loads(self.lineup)
         if self.playerstats:
-          retval["playerstats"] = json.loads(self.playerstats)
+            retval["playerstats"] = json.loads(self.playerstats)
         if self.subs:
-          retval["subs"] = json.loads(self.subs)
+            retval["subs"] = json.loads(self.subs)
         if self.match_stats:
-          retval["match_stats"] = json.loads(self.match_stats)
+            retval["match_stats"] = json.loads(self.match_stats)
         if self.match_info:
-          retval["match_info"] = json.loads(self.match_info)
+            retval["match_info"] = json.loads(self.match_info)
         if self.commentaries:
-          retval["commentaries"] = [commentary.to_json() for commentary
-                                    in self.commentaries]
+            retval["commentaries"] = [commentary.to_json() for commentary
+                                      in self.commentaries]
         if self.events:
-          retval["events"] = [event.to_json() for event in self.events]
+            retval["events"] = [event.to_json() for event in self.events]
         return retval
 
     def to_json_detail(self):

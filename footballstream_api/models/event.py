@@ -39,7 +39,8 @@ class Event(Base):
 
         retval = dict((k, getattr(self, k, None)) for k in fields)
         # extra fields below
-        retval['team'] = self.team.to_json_minor()
+        if self.team:
+            retval['team'] = self.team.to_json_minor()
         return retval
 
     def to_json(self):
