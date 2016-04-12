@@ -28,7 +28,6 @@ class Event(Base):
     def __json__(self):
         # set fields here
         fields = ("id",
-                  "type"
                   "type",
                   "minute",
                   "extra_min",
