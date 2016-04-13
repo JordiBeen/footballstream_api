@@ -74,3 +74,11 @@ def setup_routes(config):
     config.add_route('events.list', '/api/v1/events')
     # GET
     config.add_route('events.get', '/api/v1/events/{event_id}')
+
+    ###
+    # EVENTS
+    ###
+    # LIST
+    config.add_route('tweets.list', '/api/v1/tweets')
+    # GET
+    config.add_route('tweets.get', '/api/v1/tweets/{tweet_id}')

@@ -105,7 +105,7 @@ def update_matches(settings):
                 string_time = "{} {}".format(obj['formatted_date'],
                                              obj['time'])
                 time_obj = datetime.datetime.strptime(string_time,
-                                                      "%d.%m.%Y %H:%M")
+                                                      "%d.%m.%Y %H:%M") + datetime.timedelta(hours=2)
                 match.date_start = time_obj
             except:
                 log.info("This match does not have a startdate")

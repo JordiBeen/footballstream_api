@@ -27,7 +27,8 @@ requires = [
     'bcrypt',
     'pycrypto',
     'waitress',
-    'requests'
+    'requests',
+    'twython'
 ]
 
 setup(name='footballstream_api',
@@ -63,6 +64,6 @@ setup(name='footballstream_api',
       updatematches = footballstream_api.scripts.updatematches:main
       updatelivematches = footballstream_api.scripts.updatelivematches:main
       updateteams = footballstream_api.scripts.updateteams:main
-      updateplayers = footballstream_api.scripts.updateplayers:main
+      updatetweets = footballstream_api.scripts.updatetweets:main
       """,
       )

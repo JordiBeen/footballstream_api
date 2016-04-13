@@ -27,8 +27,8 @@ def general_entry_points(request):
                 'get': '/matches/{match_id}',
                 'list_current': '/matches/current',
                 'list_finished': '/matches/finished',
-                'get_by_team': '/matches?team_id={team_id} '
-                               '(List of ids is allowed)'
+                'list_by_team': '/matches?team_id={team_id} '
+                                '(List of ids is allowed)'
             },
             'commentaries': {
                 'list': '/commentaries',
@@ -37,7 +37,12 @@ def general_entry_points(request):
             'teams': {
                 'list': '/teams',
                 'get': '/teams/{team_id}',
-                'get_by_competition': '/teams?competition_id={competition_id}'
+                'list_by_competition': '/teams?competition_id={competition_id}'
+            },
+            'tweets': {
+                'list': '/tweets',
+                'get': '/tweets/{team_id}',
+                'list_by_match': '/tweets?match_id={match_id}'
             },
             'players': {
                 'list': '/players',

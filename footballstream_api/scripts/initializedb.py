@@ -18,6 +18,7 @@ from ..models.standing import Standing  # noqa
 from ..models.match import Match  # noqa
 from ..models.commentary import Commentary  # noqa
 from ..models.team import Team  # noqa
+from ..models.tweet import Tweet  # noqa
 
 log = logging.getLogger(__name__)
 
