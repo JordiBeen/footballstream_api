@@ -9,6 +9,7 @@ from sqlalchemy import (Column, DateTime, ForeignKey, Integer, String,
 from sqlalchemy.orm import relationship
 
 from .meta import Base, DBSession
+from ..models.team import get_team
 
 log = logging.getLogger(__name__)
 
@@ -58,9 +59,19 @@ class Match(Base):
 
         retval = dict((k, getattr(self, k, None)) for k in fields)
         # extra fields below
+        hometeam = None
+        awayteam = None
         if self.localteam and self.visitorteam:
-            retval['matchup'] = "{} - {}".format(self.localteam.name,
-                                                 self.visitorteam.name)
+            hometeam = self.localteam
+            awayteam = self.visitorteam
+        elif self.localteam_name and self.visitorteam_name:
+            hometeam = get_team(name=self.localteam_name)
+            awayteam = get_team(name=self.visitorteam_name)
+        if hometeam and awayteam:
+            retval['home_team'] = hometeam.to_json()
+            retval['away_team'] = awayteam.to_json()
+            retval['matchup'] = "{} - {}".format(hometeam.name,
+                                                 awayteam.name)
         if self.competition:
             retval['competition'] = "{} - {}".format(self.competition.region,
                                                      self.competition.name)

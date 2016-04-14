@@ -95,12 +95,14 @@ class Team(Base):
         return self.__json_minor__()
 
 
-def get_team(id_=None, external_id=None):
+def get_team(id_=None, external_id=None, name=None):
     q = DBSession.query(Team)
     if id_:
         q = q.filter(Team.id == id_)
     if external_id:
         q = q.filter(Team.external_id == external_id)
+    if name:
+        q = q.filter(Team.name == name)
     return q.first()
 
 

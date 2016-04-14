@@ -49,6 +49,9 @@ def update_tweets(settings):
     # access_token_secret = settings['twitter-api.access_token_secret']
     current_matches = list_matches(current=True)
 
+    if not current_matches:
+        log.info("No current matches at this time")
+
     for match in current_matches:
         home_team = None
         away_team = None
