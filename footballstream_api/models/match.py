@@ -93,9 +93,7 @@ class Match(Base):
                   "venue_city",
                   "status",
                   "timer",
-                  "localteam_name",
                   "localteam_score",
-                  "visitorteam_name",
                   "visitorteam_score",
                   "ht_score",
                   "ft_score",
@@ -106,10 +104,17 @@ class Match(Base):
 
         retval = dict((k, getattr(self, k, None)) for k in fields)
         # extra fields below
-        if self.localteam:
-            retval['home_team'] = self.localteam.to_json()
-        if self.visitorteam:
-            retval['away_team'] = self.visitorteam.to_json()
+        if self.localteam and self.visitorteam:
+            hometeam = self.localteam
+            awayteam = self.visitorteam
+        elif self.localteam_name and self.visitorteam_name:
+            hometeam = get_team(name=self.localteam_name)
+            awayteam = get_team(name=self.visitorteam_name)
+        if hometeam and awayteam:
+            retval['home_team'] = hometeam.to_json()
+            retval['away_team'] = awayteam.to_json()
+            retval['matchup'] = "{} - {}".format(hometeam.name,
+                                                 awayteam.name)
         if self.competition:
             retval['competition'] = self.competition.to_json()
         retval['date_start'] = datetime.datetime.strftime(self.date_start,
@@ -144,8 +149,14 @@ class Match(Base):
         retval = dict((k, getattr(self, k, None)) for k in fields)
         # extra fields below
         if self.localteam and self.visitorteam:
-            retval['matchup'] = "{} - {}".format(self.localteam.name,
-                                                 self.visitorteam.name)
+            hometeam = self.localteam
+            awayteam = self.visitorteam
+        elif self.localteam_name and self.visitorteam_name:
+            hometeam = get_team(name=self.localteam_name)
+            awayteam = get_team(name=self.visitorteam_name)
+        if hometeam and awayteam:
+            retval['matchup'] = "{} - {}".format(hometeam.name,
+                                                 awayteam.name)
         if self.competition:
             retval['competition'] = "{} - {}".format(self.competition.region,
                                                      self.competition.name)
