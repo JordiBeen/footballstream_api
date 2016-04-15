@@ -72,6 +72,9 @@ class Match(Base):
             retval['away_team'] = awayteam.to_json()
             retval['matchup'] = "{} - {}".format(hometeam.name,
                                                  awayteam.name)
+        elif self.localteam_name and self.visitorteam_name:
+            retval['matchup'] = "{} - {}".format(self.localteam_name,
+                                                 self.visitorteam_name)
         if self.competition:
             retval['competition'] = "{} - {}".format(self.competition.region,
                                                      self.competition.name)
@@ -115,6 +118,9 @@ class Match(Base):
             retval['away_team'] = awayteam.to_json()
             retval['matchup'] = "{} - {}".format(hometeam.name,
                                                  awayteam.name)
+        elif self.localteam_name and self.visitorteam_name:
+            retval['matchup'] = "{} - {}".format(self.localteam_name,
+                                                 self.visitorteam_name)
         if self.competition:
             retval['competition'] = self.competition.to_json()
         retval['date_start'] = datetime.datetime.strftime(self.date_start,
@@ -157,6 +163,9 @@ class Match(Base):
         if hometeam and awayteam:
             retval['matchup'] = "{} - {}".format(hometeam.name,
                                                  awayteam.name)
+        elif self.localteam_name and self.visitorteam_name:
+            retval['matchup'] = "{} - {}".format(self.localteam_name,
+                                                 self.visitorteam_name)
         if self.competition:
             retval['competition'] = "{} - {}".format(self.competition.region,
                                                      self.competition.name)
