@@ -194,9 +194,11 @@ def list_matches(upcoming=True, current=None, finished=None):
     if current:
         q = q.filter(Match.date_start <= time.ctime())\
             .filter(Match.status != "FT")\
+            .filter(Match.status != "Pen.")\
             .order_by(asc(Match.date_start))
     if finished:
         q = q.filter(Match.date_start <= time.ctime())\
             .filter(Match.status == "FT")\
+            .filter(Match.status == "Pen.")\
             .order_by(desc(Match.date_start)).limit(100)
     return q.all()

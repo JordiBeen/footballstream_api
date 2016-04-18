@@ -10,12 +10,12 @@ from twython import Twython
 
 import transaction
 
-from ..models import merge, persist
+from ..models import merge, persist, delete
 from ..models.meta import Base, DBSession
 from ..models.competition import Competition  # noqa
 from ..models.user import User, get_user  # noqa
 from ..models.match import Match, get_match, list_matches  # noqa
-from ..models.tweet import Tweet, get_tweet  # noqa
+from ..models.tweet import Tweet, get_tweet, list_tweets  # noqa
 from ..models.team import Team  # noqa
 
 
@@ -48,43 +48,47 @@ def update_tweets(settings):
     access_token = settings['twitter-api.access_token']
     # access_token_secret = settings['twitter-api.access_token_secret']
     current_matches = list_matches(current=True)
+    all_tweets = list_tweets()
 
-    if not current_matches:
-        log.info("No current matches at this time")
+    with transaction.manager:
+        for tweet in all_tweets:
+            if tweet.match_id not in [match.external_id for match in current_matches]:
+                delete(tweet)
 
-    for match in current_matches:
-        home_team = None
-        away_team = None
+        if not current_matches:
+            log.info("No current matches at this time")
 
-        if match.localteam_name:
-            home_team = match.localteam_name
-        if match.visitorteam_name:
-            away_team = match.visitorteam_name
-        if match.localteam and match.localteam.name:
-            home_team = match.localteam.name
-        if match.visitorteam and match.visitorteam.name:
-            away_team = match.visitorteam.name
+        for match in current_matches:
+            match = get_match(id_=match.id)
+            home_team = None
+            away_team = None
 
-        if not home_team and not away_team:
-            return
+            if match.localteam_name:
+                home_team = match.localteam_name
+            if match.visitorteam_name:
+                away_team = match.visitorteam_name
+            if match.localteam and match.localteam.name:
+                home_team = match.localteam.name
+            if match.visitorteam and match.visitorteam.name:
+                away_team = match.visitorteam.name
 
-        search_query = '#{}{} OR "{}" OR "{}" -RT'\
-            .format(home_team[:3],
-                    away_team[:3],
-                    home_team,
-                    away_team)\
-            .upper()
+            if not home_team and not away_team:
+                return
 
-        twitter = Twython(app_key, access_token=access_token)
-        twitter_result = twitter.search(q=search_query,
-                                        result_type='recent',
-                                        count=500
-                                        )
+            search_query = '#{}{} -RT'\
+                .format(home_team[:3],
+                        away_team[:3])\
+                .upper()
 
-        if not twitter_result['statuses']:
-            return
+            twitter = Twython(app_key, access_token=access_token)
+            twitter_result = twitter.search(q=search_query,
+                                            result_type='recent',
+                                            count=500
+                                            )
 
-        with transaction.manager:
+            if not twitter_result['statuses']:
+                return
+
             for obj in twitter_result['statuses']:
                 # Does the tweet exist yet?
                 tweet = get_tweet(text=obj['text'])
@@ -118,9 +122,9 @@ def update_tweets(settings):
                 merge(tweet)
                 persist(tweet)
 
-        rate_limit = twitter.get_lastfunction_header('x-rate-limit-remaining')
-        log.info("{} Start of log: '{}' {}".format("-" * 40, "rate_limit",
-                                                   "-" * 40))
-        log.info(rate_limit)
-        log.info("{} End of log: '{}' {}".format("-" * 40, "rate_limit",
-                                                 "-" * 40))
+            rate_limit = twitter.get_lastfunction_header('x-rate-limit-remaining')
+            log.info("{} Start of log: '{}' {}".format("-" * 40, "rate_limit",
+                                                       "-" * 40))
+            log.info(rate_limit)
+            log.info("{} End of log: '{}' {}".format("-" * 40, "rate_limit",
+                                                     "-" * 40))

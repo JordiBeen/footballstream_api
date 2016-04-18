@@ -72,5 +72,4 @@ def get_tweet(id_=None, external_id=None, text=None):
 
 def list_tweets():
     q = DBSession.query(Tweet)
-    q = q.order_by(desc(Tweet.date_created)).limit(100)
     return q.all()
