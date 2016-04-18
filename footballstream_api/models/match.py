@@ -136,10 +136,19 @@ class Match(Base):
         if self.match_info:
             retval["match_info"] = json.loads(self.match_info)
         if self.commentaries:
-            retval["commentaries"] = [commentary.to_json() for commentary
-                                      in self.commentaries]
+            commentaries = {}
+            for commentary in self.commentaries:
+                minute = commentary.minute.replace("'", "").replace("''", "")
+                if minute == '':
+                    continue
+                commentaries[minute] = commentary
+            sorted(commentaries)
+            retval["commentaries"] = [commentaries[commentary].to_json() for commentary
+                                      in commentaries]
         if self.events:
             retval["events"] = [event.to_json() for event in self.events]
+        if self.tweets:
+            retval["tweets"] = [tweet.to_json() for tweet in self.tweets]
         return retval
 
     def to_json_detail(self):
@@ -189,7 +198,7 @@ def get_match(id_=None, external_id=None):
 def list_matches(upcoming=True, current=None, finished=None):
     q = DBSession.query(Match)
     if upcoming and not current and not finished:
-        q = q.filter(Match.date_start >= time.ctime())\
+        q = q.filter(or_(Match.date_start >= time.ctime(), and_(Match.date_start <= time.ctime(), and_(Match.status != "FT", Match.status != "Pen."))))\
             .order_by(asc(Match.date_start))
     if current:
         q = q.filter(Match.date_start <= time.ctime())\
