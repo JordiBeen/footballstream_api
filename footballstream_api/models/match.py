@@ -5,7 +5,7 @@ import logging
 import time
 
 from sqlalchemy import (Column, DateTime, ForeignKey, Integer, String,
-                        Text, asc, desc)
+                        Text, asc, desc, or_, and_)
 from sqlalchemy.orm import relationship
 
 from .meta import Base, DBSession
@@ -193,12 +193,10 @@ def list_matches(upcoming=True, current=None, finished=None):
             .order_by(asc(Match.date_start))
     if current:
         q = q.filter(Match.date_start <= time.ctime())\
-            .filter(Match.status != "FT")\
-            .filter(Match.status != "Pen.")\
+            .filter(and_(Match.status != "FT", Match.status != "Pen."))\
             .order_by(asc(Match.date_start))
     if finished:
         q = q.filter(Match.date_start <= time.ctime())\
-            .filter(Match.status == "FT")\
-            .filter(Match.status == "Pen.")\
+            .filter(or_(Match.status == "FT", Match.status == "Pen."))\
             .order_by(desc(Match.date_start)).limit(100)
     return q.all()
