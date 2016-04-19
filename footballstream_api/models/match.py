@@ -136,15 +136,8 @@ class Match(Base):
         if self.match_info:
             retval["match_info"] = json.loads(self.match_info)
         if self.commentaries:
-            commentaries = {}
-            for commentary in self.commentaries:
-                minute = commentary.minute.replace("'", "").replace("''", "")
-                if minute == '':
-                    continue
-                commentaries[minute] = commentary
-            sorted(commentaries)
-            retval["commentaries"] = [commentaries[commentary].to_json() for commentary
-                                      in commentaries]
+            retval["commentaries"] = [commentary.to_json() for commentary
+                                      in self.commentaries]
         if self.events:
             retval["events"] = [event.to_json() for event in self.events]
         if self.tweets:
