@@ -112,6 +112,19 @@ def update_commentaries(settings):
         request = requests.get(api_url + api_endpoint, params=payload)
         response = request.json()
 
+        with transaction.manager:
+            match = get_match(id_=match.id)
+            match.status = response['status']
+            match.timer = response['timer']
+            match.localteam_name = response['localteam_name']
+            if response['localteam_score'] and response['localteam_score'] != '?':
+                match.localteam_score = response['localteam_score']
+            match.visitorteam_name = response['visitorteam_name']
+            if response['visitorteam_score'] and response['visitorteam_score'] != '?':
+                match.visitorteam_score = response['visitorteam_score']
+            merge(match)
+            persist(match)
+
         # Check if this object actually has a team or is
         # a faux object
         if request.status_code == 200:
@@ -124,7 +137,7 @@ def update_commentaries(settings):
 
                         # To what match does this event belong?
                         match = get_match(id_=match.id)
-
+                        
                         # To what team does this event belong
                         team = None
                         if obj['team'] == "localteam":
