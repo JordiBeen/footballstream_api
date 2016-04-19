@@ -69,32 +69,31 @@ def update_commentaries(settings):
             comments = response['comments']
             if comments:
                 with transaction.manager:
-                    for obj in comments:
-                            # Does the event exist yet?
-                            commentary = get_commentary(match_id=match.external_id, 
-                                                        comment=obj['comment'])
+                    obj = comments[1]
+                    # Is there already a commentary for this match?
+                    commentary = get_commentary(match_id=match.external_id)
 
-                            # To what match does this event belong?
-                            com_match = get_match(id_=match.id)
+                    # To what match does this event belong?
+                    com_match = get_match(id_=match.id)
 
-                            # If commentary doesn't exist yet, we create a new one
-                            if not commentary:
-                                log.info('Commentary does not yet exist,'
-                                         'creating commentary')
-                                log.info(obj['comment'])
-                                log.info(obj['minute'])
-                                commentary = Commentary()
-                                commentary.external_id = obj['id']
+                    # If commentary doesn't exist yet, we create a new one
+                    if not commentary:
+                        log.info('Commentary does not yet exist,'
+                                 'creating commentary')
+                        log.info(obj['comment'])
+                        log.info(obj['minute'])
+                        commentary = Commentary()
+                        commentary.external_id = obj['id']
 
-                            # Else we just overwrite the commentary
-                            commentary.isgoal = obj['isgoal']
-                            commentary.comment = obj['comment']
-                            commentary.minute = obj['minute']
-                            commentary.important = obj['important']
-                            commentary.match = com_match
+                    # Else we just overwrite the commentary
+                    commentary.isgoal = obj['isgoal']
+                    commentary.comment = obj['comment']
+                    commentary.minute = obj['minute']
+                    commentary.important = obj['important']
+                    commentary.match = com_match
 
-                            merge(commentary)
-                            persist(commentary)
+                    merge(commentary)
+                    persist(commentary)
 
                     merge_match = get_match(id_=match.id)
                     merge_match.lineup = json.dumps(response['lineup'])
