@@ -75,10 +75,21 @@ def update_tweets(settings):
             if not home_team and not away_team:
                 continue
 
+            team_fix_mapping = {
+                "DEG": "GRA"
+            }
+            home_team = home_team.replace(' ', '')[:3].upper()
+            away_team = away_team.replace(' ', '')[:3].upper()
+
+            if home_team in team_fix_mapping:
+                home_team = team_fix_mapping[home_team]
+
+            if away_team in team_fix_mapping:
+                away_team = team_fix_mapping[away_team]
+
             search_query = '#{}{} -RT'\
-                .format(home_team[:3],
-                        away_team[:3])\
-                .upper()
+                .format(home_team,
+                        away_team)\
 
             twitter = Twython(app_key, access_token=access_token)
             twitter_result = twitter.search(q=search_query,
