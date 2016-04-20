@@ -94,15 +94,14 @@ def update_commentaries(settings):
 
                     merge(commentary)
                     persist(commentary)
-
-                    merge_match = get_match(id_=match.id)
-                    merge_match.lineup = json.dumps(response['lineup'])
-                    merge_match.playerstats = json.dumps(response['player_stats'])
-                    merge_match.subs = json.dumps(response['subs'])
-                    merge_match.match_stats = json.dumps(response['match_stats'])
-                    merge_match.match_info = json.dumps(response['match_info'])
-                    merge(merge_match)
-                    persist(merge_match)
+                    
+                    com_match.lineup = json.dumps(response['lineup'])
+                    com_match.playerstats = json.dumps(response['player_stats'])
+                    com_match.subs = json.dumps(response['subs'])
+                    com_match.match_stats = json.dumps(response['match_stats'])
+                    com_match.match_info = json.dumps(response['match_info'])
+                    merge(com_match)
+                    persist(com_match)
 
         log.info('Getting live events for match with id: {}'
                  .format(match.external_id))
