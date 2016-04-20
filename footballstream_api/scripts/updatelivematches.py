@@ -67,7 +67,7 @@ def update_commentaries(settings):
         # a faux object
         if request.status_code == 200:
             comments = response['comments']
-            if comments:
+            if comments and comments[1]:
                 with transaction.manager:
                     obj = comments[1]
                     # Is there already a commentary for this match?
@@ -114,13 +114,17 @@ def update_commentaries(settings):
 
         with transaction.manager:
             match = get_match(id_=match.id)
-            match.status = response['status']
-            match.timer = response['timer']
-            match.localteam_name = response['localteam_name']
-            if response['localteam_score'] and response['localteam_score'] != '?':
+            if hasattr(response, 'status'):
+                match.status = response['status']
+            if hasattr(response, 'timer'):
+                match.timer = response['timer']
+            if hasattr(response, 'localteam_name'):
+                match.localteam_name = response['localteam_name']
+            if hasattr(response, 'localteam_score') and response['localteam_score'] != '?':
                 match.localteam_score = response['localteam_score']
-            match.visitorteam_name = response['visitorteam_name']
-            if response['visitorteam_score'] and response['visitorteam_score'] != '?':
+            if hasattr(response, 'visitorteam_name'):
+                match.visitorteam_name = response['visitorteam_name']
+            if hasattr(response, 'visitorteam_score') and response['visitorteam_score'] != '?':
                 match.visitorteam_score = response['visitorteam_score']
             merge(match)
             persist(match)

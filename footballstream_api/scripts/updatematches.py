@@ -80,6 +80,11 @@ def update_matches(settings):
                 match = Match()
                 match.external_id = obj['id']
 
+            competition = get_competition(external_id=obj['comp_id'])
+            if not competition:
+                log.info("We do not follow this competition, skipping match")
+                continue
+
             # Else we just overwrite the match
             match.season = obj['season']
             match.week = obj['week'] if obj['week'] else None
@@ -111,12 +116,10 @@ def update_matches(settings):
                 log.info("This match does not have a startdate")
 
             # Create relations
-            competition = get_competition(external_id=obj['comp_id'])
             localteam = get_team(external_id=obj['localteam_id'])
             visitorteam = get_team(external_id=obj['visitorteam_id'])
             match.competition = competition
             match.localteam = localteam
             match.visitorteam = visitorteam
-
             merge(match)
             # persist(match)

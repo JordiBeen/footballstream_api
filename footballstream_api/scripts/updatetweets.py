@@ -73,7 +73,7 @@ def update_tweets(settings):
                 away_team = match.visitorteam.name
 
             if not home_team and not away_team:
-                return
+                continue
 
             search_query = '#{}{} -RT'\
                 .format(home_team[:3],
@@ -87,7 +87,7 @@ def update_tweets(settings):
                                             )
 
             if not twitter_result['statuses']:
-                return
+                continue
 
             for obj in twitter_result['statuses']:
                 # Does the tweet exist yet?
